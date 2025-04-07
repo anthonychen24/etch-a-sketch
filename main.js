@@ -1,5 +1,7 @@
 const gridContainer = document.querySelector('.grid-container');
-const gridBtn = document.querySelector('button')
+const gridBtn = document.querySelector('.grid-btn');
+const randomColorBtn = document.querySelector('.color-btn');
+const resetBtn = document.querySelector('.reset-btn');
 
 let gridSize = 16; // Default 16x16 grid, change this value to adjust the grid size
 
@@ -17,7 +19,7 @@ function createGrid(size) {
         item.style.width = `${100 / size}%`;
         item.style.height = `${100 / size}%`;
     });
- 
+
 }
 
 // Initial grid creation
@@ -30,19 +32,22 @@ function resizeGrid() {
     if (newSize === 0) {
         return gridSize;
     }
-    else if (!isNaN(newSize) && newSize >= 1 && newSize <= 100){
+    else if (!isNaN(newSize) && newSize >= 1 && newSize <= 100) {
         gridSize = newSize;
         createGrid(gridSize);
-    }else if (isNaN(newSize)) {
+    } else if (isNaN(newSize)) {
         alert('Invalid input. Please enter a number from 1 to 100.');
         resizeGrid();
-    }else if (newSize < 1 || newSize > 100) {
+    } else if (newSize < 1 || newSize > 100) {
         alert('Invalid input. Please enter a number from 1 to 100.');
         resizeGrid();
     }
 }
 
-
+// Function to generate random numbers for rgb colors
+function random() {
+    return Math.floor(Math.random() * 256);
+}
 
 // Add event listeners for drawing functionality
 gridContainer.addEventListener('mouseover', (e) => {
@@ -54,4 +59,24 @@ gridContainer.addEventListener('mouseover', (e) => {
 // Add event listener for resizing
 gridBtn.addEventListener('click', (e) => {
     resizeGrid();
+})
+
+// Add event listener for random colors functionality
+randomColorBtn.addEventListener('click', (e) => {
+    createGrid(gridSize);
+    gridContainer.addEventListener('mouseover', (e) => {
+        if (e.target.classList.contains('grid-item')) {
+            e.target.style.backgroundColor = `rgb(${random()}, ${random()}, ${random()})`;
+        }
+    });
+})
+
+// Add event listener to reset to black
+resetBtn.addEventListener('click', (e) => {
+    createGrid(gridSize);
+    gridContainer.addEventListener('mouseover', (e) => {
+        if (e.target.classList.contains('grid-item')) {
+            e.target.style.backgroundColor = 'black';
+        }
+    });
 })
