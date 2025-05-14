@@ -4,6 +4,7 @@ const randomColorBtn = document.querySelector('.color-btn');
 const resetBtn = document.querySelector('.reset-btn');
 
 let gridSize = 16; // Default 16x16 grid, change this value to adjust the grid size
+let currentMode = 'black'; // Default color of black
 
 // Function to create the grid
 function createGrid(size) {
@@ -52,31 +53,27 @@ function random() {
 // Add event listeners for drawing functionality
 gridContainer.addEventListener('mouseover', (e) => {
     if (e.target.classList.contains('grid-item')) {
-        e.target.style.backgroundColor = 'black';
+        if (currentMode === 'black') {
+            e.target.style.backgroundColor = 'black';
+        } else if (currentMode === 'random') {
+            e.target.style.backgroundColor = `rgb(${random()}, ${random()}, ${random()})`;
+        }
     }
 });
 
 // Add event listener for resizing
 gridBtn.addEventListener('click', (e) => {
     resizeGrid();
-})
+});
 
 // Add event listener for random colors functionality
 randomColorBtn.addEventListener('click', (e) => {
     createGrid(gridSize);
-    gridContainer.addEventListener('mouseover', (e) => {
-        if (e.target.classList.contains('grid-item')) {
-            e.target.style.backgroundColor = `rgb(${random()}, ${random()}, ${random()})`;
-        }
-    });
-})
+    currentMode = 'random';
+});
 
 // Add event listener to reset to black
 resetBtn.addEventListener('click', (e) => {
     createGrid(gridSize);
-    gridContainer.addEventListener('mouseover', (e) => {
-        if (e.target.classList.contains('grid-item')) {
-            e.target.style.backgroundColor = 'black';
-        }
-    });
-})
+    currentMode = 'black';
+});
